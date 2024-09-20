@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrl: './order.component.scss'
+  styleUrl: './order.component.scss',
 })
-export class OrderComponent {
+export class OrderComponent implements OnInit {
+  constructor(private spinner: NgxSpinnerService) {}
 
+  ngOnInit(): void {}
 }
