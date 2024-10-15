@@ -1,47 +1,43 @@
 import { Injectable } from '@angular/core';
-
 declare var alertify: any;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertifyService {
+  // , messageType : MessageType, position: Position, delay:number, dismissOthers: boolean=false = alertifyOptions
   constructor() {}
-
-  message(message: string, options: Partial<AlertOptions>) {
-    alertify.set('notifier', 'delay', 3);
+  message(message: string, options: Partial<AlertifyOptions>) {
     alertify.set('notifier', 'position', options.position);
-    const msj = alertify[options.messageType](message);
-    if (options.dismissOthers) {
-      msj.dismissOthers();
+
+    alertify.set('notifier', 'delay', options.delay);
+    const mess = alertify[options.messageType](message);
+    if (options.dismisOthers) {
+      mess.dismissOthers();
     }
   }
-
   dismiss() {
     alertify.dismissAll();
   }
 }
-
-export class AlertOptions {
-  messageType: MessageType = MessageType.Message;
-  position: Position = Position.BottomLeft;
-  delay: number = 3;
-  dismissOthers: boolean = false;
-}
-
 export enum MessageType {
-  Success = 'success',
   Error = 'error',
-  Warning = 'warning',
   Message = 'message',
   Notify = 'notify',
+  Success = 'success',
+  Warning = 'warning',
 }
-
 export enum Position {
-  TopLeft = 'top-left',
-  TopRight = 'top-right',
   TopCenter = 'top-center',
+  TopRight = 'top-right',
+  TopLeft = 'top-left',
+  BottonRight = 'bottom-right',
   BottomLeft = 'bottom-left',
-  BottomRight = 'bottom-right',
   BottomCenter = 'bottom-center',
+}
+export class AlertifyOptions {
+  messageType: MessageType = MessageType.Message;
+  position: Position = Position.BottonRight;
+  delay: number = 2;
+  dismisOthers: boolean = false;
 }
