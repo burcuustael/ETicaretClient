@@ -31,6 +31,8 @@ export class ListComponent extends BaseComponent implements OnInit {
     'price',
     'createdDate',
     'updatedDate',
+    'edit',
+    'delete',
   ];
 
   dataSource: MatTableDataSource<List_Product> = null;
