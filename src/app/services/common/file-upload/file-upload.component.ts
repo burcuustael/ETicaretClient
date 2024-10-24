@@ -12,6 +12,11 @@ import {
   ToastrPosition,
 } from '../../ui/custom-toastr.service';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { DialogService } from '../dialog.service';
+import {
+  FileUploadDialogComponent,
+  FileUploadDialogState,
+} from '../../../dialogs/file-upload-dialog/file-upload-dialog.component';
 
 @Component({
   selector: 'app-file-upload',
@@ -20,9 +25,10 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 })
 export class FileUploadComponent {
   constructor(
-    private httpClientService: HttpClientService,
-    private alertifyService: AlertifyService,
-    private customToastrService: CustomToastrService
+    private httpClient: HttpClientService,
+    private alertify: AlertifyService,
+    private customToastr: CustomToastrService,
+    private dialogService: DialogService
   ) {}
 
   public files: NgxFileDropEntry[] = [];
@@ -38,49 +44,42 @@ export class FileUploadComponent {
       });
     }
 
-    this.httpClientService
-      .post(
-        {
-          controller: this.options.controller,
-          action: this.options.action,
-          queryString: this.options.queryString,
-          headers: new HttpHeaders({ responseType: 'blob' }),
-        },
-        fileData
-      )
-      .subscribe(
-        (data) => {
-          const message: string = 'Dosyalar başarıyla yüklenmiştir.';
+    //
+    this.dialogService.openDialog({
+      componentType: FileUploadDialogComponent,
+      data: FileUploadDialogState.Yes,
 
-          if (this.options.isAdminPage) {
-            this.alertifyService.message(message, {
-              dismisOthers: true,
-              messageType: MessageType.Success,
-              position: Position.TopRight,
-            });
-          } else {
-            this.customToastrService.message(message, 'Başarılı.', {
-              messageType: ToastrMessageType.Success,
-              position: ToastrPosition.TopRight,
-            });
-          }
-        },
-        (errorResponse: HttpErrorResponse) => {
-          const message: string = 'Dosyalar yüklenirken hata oldu.';
-          if (this.options.isAdminPage) {
-            this.alertifyService.message(message, {
-              dismisOthers: true,
-              messageType: MessageType.Error,
-              position: Position.TopRight,
-            });
-          } else {
-            this.customToastrService.message(message, 'Başarısız.', {
-              messageType: ToastrMessageType.Error,
-              position: ToastrPosition.TopRight,
-            });
-          }
-        }
-      );
+      afterClosed: () => {
+        this.httpClient
+          .post(
+            {
+              controller: this.options.controller,
+              action: this.options.action,
+              queryString: this.options.queryString,
+              headers: new HttpHeaders({ responseType: 'blob' }),
+            },
+            fileData
+          )
+          .subscribe(
+            (data) => {
+              const message: string = 'Dosyalar basariyla yuklendi.';
+
+              this.alertify.message(message, {
+                dismisOthers: true,
+                messageType: MessageType.Success,
+                position: Position.TopRight,
+              });
+            },
+            (errer: HttpErrorResponse) => {
+              this.alertify.message('Yukleme basarisiz oldu', {
+                dismisOthers: true,
+                messageType: MessageType.Error,
+                position: Position.TopRight,
+              });
+            }
+          );
+      },
+    });
   }
 }
 
