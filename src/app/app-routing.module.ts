@@ -49,6 +49,13 @@ const routes: Routes = [
         (m) => m.ProductsModule
       ),
   },
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('./ui/components/register/register.module').then(
+        (m) => m.RegisterModule
+      ),
+  },
 ];
 
 @NgModule({
