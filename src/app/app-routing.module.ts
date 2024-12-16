@@ -56,6 +56,11 @@ const routes: Routes = [
         (m) => m.RegisterModule
       ),
   },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./ui/components/login/login.module').then((m) => m.LoginModule),
+  },
 ];
 
 @NgModule({
