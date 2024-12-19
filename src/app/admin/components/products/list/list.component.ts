@@ -9,7 +9,7 @@ import {
   MessageType,
   Position,
 } from '../../../../services/admin/alertify.service';
-import { error } from 'console';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { DialogService } from '../../../../services/common/dialog.service';
 import { SelectProductImageDialogComponent } from '../../../../dialogs/select-product-image-dialog/select-product-image-dialog.component';
