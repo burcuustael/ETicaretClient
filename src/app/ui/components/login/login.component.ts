@@ -7,6 +7,7 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../../../services/ui/custom-toastr.service';
+import { AuthService } from '../../../services/common/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent extends BaseComponent {
   constructor(
     private userService: UserService,
     spinner: NgxSpinnerService,
-    private toastService: CustomToastrService
+    private toastService: CustomToastrService,
+    private authService: AuthService
   ) {
     super(spinner);
   }
@@ -26,6 +28,7 @@ export class LoginComponent extends BaseComponent {
     this.showSpinner(SpinnerType.BallAtom);
     await this.userService
       .login(usernameOrEmail, password, () => {
+        this.authService.identityCheck();
         this.hideSpinner(SpinnerType.BallAtom);
       })
       .catch((error) => {

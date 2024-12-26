@@ -3,19 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './admin/layout/layout.component';
 import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
 import { HomeComponent } from './ui/components/home/home.component';
+import { authGuard } from './guards/common/auth.guard';
 
 const routes: Routes = [
   {
     path: 'admin',
     component: LayoutComponent,
     children: [
-      { path: '', component: DashboardComponent },
+      { path: '', component: DashboardComponent, canActivate: [authGuard] },
       {
         path: 'customers',
         loadChildren: () =>
           import('./admin/components/customer/customer.module').then(
             (m) => m.CustomerModule
           ),
+        canActivate: [authGuard],
       },
       {
         path: 'orders',
@@ -23,6 +25,7 @@ const routes: Routes = [
           import('./admin/components/order/order.module').then(
             (m) => m.OrderModule
           ),
+        canActivate: [authGuard],
       },
       {
         path: 'products',
@@ -30,8 +33,10 @@ const routes: Routes = [
           import('./admin/components/products/products.module').then(
             (m) => m.ProductsModule
           ),
+        canActivate: [authGuard],
       },
     ],
+    canActivate: [authGuard],
   },
 
   { path: '', component: HomeComponent },
