@@ -8,6 +8,7 @@ import {
   ToastrPosition,
 } from '../../../services/ui/custom-toastr.service';
 import { AuthService } from '../../../services/common/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,9 @@ export class LoginComponent extends BaseComponent {
     private userService: UserService,
     spinner: NgxSpinnerService,
     private toastService: CustomToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     super(spinner);
   }
@@ -29,6 +32,12 @@ export class LoginComponent extends BaseComponent {
     await this.userService
       .login(usernameOrEmail, password, () => {
         this.authService.identityCheck();
+        this.activatedRoute.queryParams.subscribe((params) => {
+          const returnUrl: string = params['returnUrl'];
+          if (returnUrl) {
+            this.router.navigate([returnUrl]);
+          }
+        });
         this.hideSpinner(SpinnerType.BallAtom);
       })
       .catch((error) => {

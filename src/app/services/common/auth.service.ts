@@ -19,6 +19,10 @@ export class AuthService {
     }
     _isAuthenticated = token != null && !expired;
   }
+
+  get isAuthenticated(): boolean {
+    return _isAuthenticated;
+  }
 }
 
 export let _isAuthenticated: boolean;

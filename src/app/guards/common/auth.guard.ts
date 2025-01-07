@@ -21,7 +21,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     toastrService.message('Oturum açmanız gerekiyor!', 'Yetkisiz Erişim!', {
       messageType: ToastrMessageType.Warning,
       position: ToastrPosition.TopRight,
-    });
+    });  
 
     spinner.hide(SpinnerType.BallAtom);
   }

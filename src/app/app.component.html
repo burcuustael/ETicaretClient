@@ -43,12 +43,27 @@
                 class="nav-link active"
                 aria-current="page"
                 routerLink="register"
+                *ngIf="!authService.isAuthenticated"
                 >Kayıt Ol</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" routerLink="login"
+              <a
+                class="nav-link active"
+                aria-current="page"
+                routerLink="login"
+                *ngIf="!authService.isAuthenticated"
                 >Giriş Yap</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                style="color: red"
+                (click)="signOut()"
+                *ngIf="authService.isAuthenticated"
+                >Çıkış Yap</a
               >
             </li>
             <li>
@@ -56,6 +71,7 @@
                 routerLink="admin"
                 class="btn btn-outline-success"
                 type="submit"
+                *ngIf="authService.isAuthenticated"
                 >Yönetim Paneli</a
               >
             </li>
