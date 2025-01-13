@@ -9,6 +9,11 @@ import {
 } from '../../../services/ui/custom-toastr.service';
 import { AuthService } from '../../../services/common/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  SocialAuthService,
+  SocialUser,
+  GoogleSigninButtonModule,
+} from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -22,9 +27,13 @@ export class LoginComponent extends BaseComponent {
     private toastService: CustomToastrService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private socialAuthService: SocialAuthService
   ) {
     super(spinner);
+    socialAuthService.authState.subscribe((user: SocialUser) => {
+      console.log(user);
+    });
   }
 
   async login(usernameOrEmail: string, password: string) {
