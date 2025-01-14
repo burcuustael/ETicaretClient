@@ -8,12 +8,14 @@ import {
   ToastrPosition,
 } from '../../../services/ui/custom-toastr.service';
 import { AuthService } from '../../../services/common/auth.service';
+import { HttpClientService } from '../../../services/common/http-client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   SocialAuthService,
   SocialUser,
   GoogleSigninButtonModule,
 } from '@abacritt/angularx-social-login';
+import { TokenResponse } from '../../../contracts/token/tokenResponse';
 
 @Component({
   selector: 'app-login',
@@ -31,8 +33,12 @@ export class LoginComponent extends BaseComponent {
     private socialAuthService: SocialAuthService
   ) {
     super(spinner);
-    socialAuthService.authState.subscribe((user: SocialUser) => {
+    socialAuthService.authState.subscribe(async (user: SocialUser) => {
       console.log(user);
+      this.showSpinner(SpinnerType.BallAtom);
+      await userService.googleLogin(user, () =>
+        this.hideSpinner(SpinnerType.BallAtom)
+      );
     });
   }
 
